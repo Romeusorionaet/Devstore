@@ -4,7 +4,11 @@ import { api } from '@/app/data/api'
 import { Product } from '@/app/data/types/product'
 
 export const getFeaturedProducts = async (): Promise<Product[]> => {
-  const response = await api('/products/featured')
+  const response = await api('/products/featured', {
+    next: {
+      revalidate: 60 * 60, // 1 hour
+    },
+  })
 
   const products = await response.json()
 
@@ -46,7 +50,7 @@ export default async function Home() {
         return (
           <Link
             key={product.id}
-            href="/"
+            href={`/product/${product.slug}`}
             className="relative group col-span-3 row-span-3 rounded-lg bg-zinc-900 overflow-hidden flex justify-center items-end"
           >
             <Image
