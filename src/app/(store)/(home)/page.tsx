@@ -1,9 +1,11 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { api } from '@/app/data/api'
-import { Product } from '@/app/data/types/product'
+import { PropsProductsWithFeatured } from '../product/[slug]/page'
 
-export const getFeaturedProducts = async (): Promise<Product[]> => {
+export const getFeaturedProducts = async (): Promise<
+  PropsProductsWithFeatured[]
+> => {
   const response = await api('/products/featured', {
     next: {
       revalidate: 60 * 60, // 1 hour

@@ -9,6 +9,10 @@ interface ProductProps {
   }
 }
 
+export interface PropsProductsWithFeatured extends Product {
+  featuredProducts: Product[]
+}
+
 export async function generateMetadata({
   params,
 }: ProductProps): Promise<Metadata> {
@@ -29,6 +33,15 @@ export const getProduct = async (slug: string): Promise<Product> => {
   const product = await response.json()
 
   return product
+}
+
+export async function generateStaticParams() {
+  const response = await api('/products/featured')
+  const products: PropsProductsWithFeatured = await response.json()
+
+  return products.featuredProducts.map((product) => {
+    return { slug: product.slug }
+  })
 }
 
 export default async function ProductPage({ params }: ProductProps) {
