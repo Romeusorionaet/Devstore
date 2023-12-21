@@ -4,10 +4,14 @@ import { Product } from '@/app/data/types/product'
 import { Metadata } from 'next'
 import Image from 'next/image'
 
-interface ProductProps {
+export interface ProductProps {
   params: {
     slug: string
   }
+}
+
+interface FeaturedProductsProps extends Product {
+  featuredProducts: Product[]
 }
 
 export async function generateMetadata({
@@ -22,13 +26,9 @@ export async function generateMetadata({
 
 export async function generateStaticParams() {
   const response = await api('/products/featured')
-  const products: Product[] = await response.json()
+  const products: FeaturedProductsProps = await response.json()
 
-  if (!products) {
-    return []
-  }
-
-  return products.map((product) => {
+  return products.featuredProducts.map((product) => {
     return { slug: product.slug }
   })
 }

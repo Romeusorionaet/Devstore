@@ -10,5 +10,5 @@ export const getFeaturedProducts = async (): Promise<Product[]> => {
 
   const products = await response.json()
 
-  return products
+  return products.featuredProducts
 }
