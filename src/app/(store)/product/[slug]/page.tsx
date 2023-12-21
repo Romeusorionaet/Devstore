@@ -1,4 +1,5 @@
 import { api } from '@/app/data/api'
+import { getProduct } from '@/app/data/get-products'
 import { Product } from '@/app/data/types/product'
 import { Metadata } from 'next'
 import Image from 'next/image'
@@ -7,10 +8,6 @@ interface ProductProps {
   params: {
     slug: string
   }
-}
-
-export interface PropsProductsWithFeatured extends Product {
-  featuredProducts: Product[]
 }
 
 export async function generateMetadata({
@@ -23,23 +20,15 @@ export async function generateMetadata({
   }
 }
 
-export const getProduct = async (slug: string): Promise<Product> => {
-  const response = await api(`/products/${slug}`, {
-    next: {
-      revalidate: 60 * 60, // 1 hour
-    },
-  })
-
-  const product = await response.json()
-
-  return product
-}
-
 export async function generateStaticParams() {
   const response = await api('/products/featured')
-  const products: PropsProductsWithFeatured = await response.json()
+  const products: Product[] = await response.json()
 
-  return products.featuredProducts.map((product) => {
+  if (!products) {
+    return []
+  }
+
+  return products.map((product) => {
     return { slug: product.slug }
   })
 }
