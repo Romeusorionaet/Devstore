@@ -1,7 +1,5 @@
 import { AddToCartButton } from '@/app/components/add-to-cart-button'
-import { api } from '@/app/data/api'
 import { getProduct } from '@/app/data/get-products'
-import { Product } from '@/app/data/types/product'
 import { Metadata } from 'next'
 import Image from 'next/image'
 
@@ -9,10 +7,6 @@ export interface ProductProps {
   params: {
     slug: string
   }
-}
-
-interface FeaturedProductsProps extends Product {
-  featuredProducts: Product[]
 }
 
 export async function generateMetadata({
@@ -23,15 +17,6 @@ export async function generateMetadata({
   return {
     title: product.title,
   }
-}
-
-export async function generateStaticParams() {
-  const response = await api('/products/featured')
-  const products: FeaturedProductsProps = await response.json()
-
-  return products.featuredProducts.map((product) => {
-    return { slug: product.slug }
-  })
 }
 
 export default async function ProductPage({ params }: ProductProps) {
