@@ -1,5 +1,6 @@
 {
   "extends": ["@rocketseat/eslint-config/react", "next/core-web-vitals"], "rules": {
-    "no-useless-return": "off"
+    "no-useless-return": "off",
+    "@typescript-eslint/no-namespace": "off",
   }
 }
