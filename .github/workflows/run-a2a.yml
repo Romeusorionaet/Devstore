@@ -43,3 +43,4 @@ jobs:
         with:
           build: npm run build
           start: npm start
+          command-prefix: CYPRESS_CACHE_FOLDER=./tmp/Cypress
