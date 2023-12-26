@@ -35,6 +35,15 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+      - name: Cache Cypress binary
+        if: success()
+        uses: actions/cache@v3
+        with:
+          path: /home/runner/.cache/Cypress
+          key: ${{ runner.os }}-cypress-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-cypress-
+
       - name: Cypress run
         uses: cypress-io/github-action@v6
         env:
@@ -43,4 +52,3 @@ jobs:
         with:
           build: npm run build
           start: npm start
-          command-prefix: CYPRESS_CACHE_FOLDER=./tmp/Cypress
