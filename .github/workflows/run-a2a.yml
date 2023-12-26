@@ -35,6 +35,10 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+      - name: Install Cypress
+        run: |
+          npx cypress install
+
       - name: Cache Cypress binary
         if: success()
         uses: actions/cache@v3
